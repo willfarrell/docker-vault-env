@@ -8,9 +8,9 @@ script to bootstrap ENV from vault
 ```Dockerfile
 ...
 RUN cd /usr/bin \
-    && wget https://github.com/willfarrell/docker-vault-env****** \
-    && chmod a+x vault-bootstrap\
-    && vault-bootstrap install
+    && wget https://raw.githubusercontent.com/willfarrell/docker-vault-env/master/vault-env \
+    && chmod a+x vault-env\
+    && vault-env install
 ...
 ```
 
