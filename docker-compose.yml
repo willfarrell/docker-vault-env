@@ -1,0 +1,15 @@
+version: "2"
+
+services:
+
+  vault:
+    image: library/vault:latest
+    ports:
+     - "8200:8200"
+    restart: always
+    read_only: false
+    security_opt:
+     - "no-new-privileges"
+    volumes:
+     - "./_vault_file:/vault/file:rw"
+     - "./log/vault:/var/log:rw"
