@@ -10,7 +10,7 @@ script to bootstrap ENV from vault
 RUN cd /usr/bin \
     && wget https://raw.githubusercontent.com/willfarrell/docker-vault-env/master/vault-env \
     && chmod a+x vault-env\
-    && vault-env install
+    && vault-env setup
 ...
 ```
 
@@ -49,10 +49,9 @@ services:
 
 ### vault-service.env
 ```bash
-VAULT_ENV="development ecom"
-VAULT_ADDR=
+VAULT_ADDR="http://localhost:8200/v1"
 VAULT_KEY=""
-VAULT_TOKEN=
+VAULT_TOKEN=""
 ```
 
 ## Vault Setup
@@ -66,3 +65,4 @@ VAULT_TOKEN=
 ## TODO
 - [ ] Docs: Policy setup
 - [ ] Docs: Auth setup
+- [ ] CI w/ Travis

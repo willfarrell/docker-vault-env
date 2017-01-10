@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+export VAULT_ADDR=http://localhost:8200/v1
+export VAULT_KEY=Unf5HWe0sDmVNX81LBlEB7ctmRlhIt/jg9UVPrVdA0c=
+export VAULT_TOKEN=90acbd04-851d-3c76-c4da-3502b6bd05c2
+
+./vault-env bootstrap
