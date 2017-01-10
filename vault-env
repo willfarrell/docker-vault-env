@@ -62,6 +62,20 @@ bootstrap () {
     : "${VAULT_KEY:?ENV VAULT_KEY is required}"
     : "${VAULT_TOKEN:?ENV VAULT_TOKEN is required}"
 
+    # wait for vault to be reachable
+    #echo "curl -s -X GET ${VAULT_ADDR}/sys/seal-status"
+    for i in {1..5}; do
+		echo "[${i} of 5] connect ${VAULT_ADDR}/sys/seal-status"
+        curl -s -X GET ${VAULT_ADDR}/sys/seal-status > /dev/null && break
+
+		if [ $[i] -ge 5 ] ; then
+			echo "failed to connect to ${VAULT_HOST} on ${VAULT_PORT}";
+			exit 1;
+		fi
+
+		sleep $i
+    done
+
     # TODO test
     for key in ${VAULT_KEY}; do
         #echo "curl -s -H 'Content-Type: application/json' -X PUT -d \"{\\\"key\\\":\\\"${key}\\\"}\" ${VAULT_ADDR}/sys/unseal"
@@ -83,7 +97,6 @@ bootstrap () {
     crawlTree ${SECRET_PATH}
 
     # Security clean up
-    export VAULT_ENV=
     export VAULT_ADDR=
     export VAULT_KEY=
     export VAULT_TOKEN=
@@ -105,8 +118,8 @@ crawlTree () {
         )
 
         while IFS="=" read -r key value; do
-            echo "Created ${key}"
             export ${key}=$value
+            echo "Created ${key}=$@:${key}"
         done < <(echo $secrets | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]')
     else
         # is folder
